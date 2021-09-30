@@ -2,83 +2,71 @@
 const _ = require('lodash');
 const Boom = require('boom');
 
+
 class Users {
     constructor(props) {
-        this.mongoClient = props.mongoClient;
+        this.db = props.db;
     }
 
-    /**
-     * Create a new user
-     * @param {*} params.login 
-     * @param {*} params.password 
-     * @param {*} params.nickname - short user name
-     * 
-     * @returns Id of a created user
-     */
-    async createUser(params) {
-        const {
-            login,
-            password,
-            nickname,
-        } = params;
+    async getUser({userId}) {
 
-        const query = this.mongoClient
-            .db("main")
-            .collection("users")
-            .findOne({login});
+        const user = await this.db('users_tbl')
+            .select()
+            .where('id_pk', '=', userId);
 
-        const user = await query;
-
-        if(user) throw Boom.badRequest("User already exists");
-
-        const res = await this.mongoClient.db("main").collection("users").insertOne({
-            login,
-            password,
-            nickname,
-        });
-
-        return {id: _.get(res, 'insertedId') };
+        return { user }
     }
 
-    /**
-     * TODO pagination for data like that
-     * TODO return only specific fields to prevent passwords lost
-     * @returns list of all users in the database
-     */
     async getUsers() {
+        const users = await this.db('users_tbl')
+            .select();
 
-        try {
-            const query = this.mongoClient
-            .db("main")
-            .collection("users")
-            .find();
+        return { users }
+    }
 
-            const count = await query.count();
-            const users = await query.toArray();
+    async createUser({ userEntity }) {
 
-            return {count, list: users};
-        } catch (error) {
-            console.log(error);
+        //TODD user entity to db_user_entity
+        const db_user_entity = {
+            first_name: userEntity.firstName,
+            email: userEntity.email,
         }
 
-        return {};
+        const insertedIds =  await this.db.transaction(async trx => {
+            return await trx('users_tbl')
+                .insert(db_user_entity)
+                .returning('id_pk');
+        });
+
+        return { insertedIds };
     }
 
-    async getUserByCredentials(credentials) {
-        const { login, password } = credentials;
+    async updateUser({ userEntity, userId }) {
+        //TODD user entity to db_user_entity
+        const db_user_entity = {
+            first_name: userEntity.firstName,
+        }
 
-        const query = this.mongoClient
-            .db("main")
-            .collection("users")
-            .findOne({login, password});
+        const updatedIds =  await this.db.transaction(async trx => {
+            return await trx('users_tbl')
+                .update(db_user_entity)
+                .where('id_pk', '=', userId)
+                .returning('id_pk');
+        });
 
-        const user = await query;
-
-        if(!user) throw Boom.badRequest("No such a user found");
-
-        return user;
+        return { updatedIds };
     }
 
+    async deleteUser({ userId }) {
+        const deletedIds =  await this.db.transaction(async trx => {
+            return await trx('users_tbl')
+                .delete()
+                .where('id_pk', '=', userId)
+                .returning('id_pk');
+        });
+
+        return { deletedIds };
+    }
 }
 
 module.exports = Users;

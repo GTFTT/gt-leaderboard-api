@@ -10,14 +10,15 @@ module.exports = ({usersModel}) => {
             validate: {
                 // payload: true //Allow everything
                 payload: Joi.object({
-                    login: Joi.string().min(5).max(255).pattern(new RegExp('^[a-zA-Z0-9_@.]*$')).required(),
-                    password: Joi.string().min(6).max(255).pattern(new RegExp('^[a-zA-Z0-9_@.]*$')).required(),
-                    nickname: Joi.string().min(1).max(20).required(),
+                    firstName: Joi.string().min(5).max(255).pattern(new RegExp('^[a-zA-Z0-9_@.]*$')).required(),
+                    //TODO Email validation
+                    //TODO other fields
+                    email: Joi.string().min(6).max(255).required(),
                 })
             }
         },
         handler: async (request, h) => {
-            const res = await usersModel.createUser({...request.payload});
+            const res = await usersModel.createUser({userEntity: request.payload});
 
             request.server.log(['info'], "New user was created");
 

@@ -12,9 +12,12 @@ const routes = {
     'test2': require('./test/testRoute2'),
     // 'arduino': require('./test/arduino'),
     
-    // Clients
-    // 'create_user': require('./users/create_user'),
-    // 'get_users': require('./users/get_users'),
+    // Users
+    'create_user': require('./users/create_user'),
+    'get_users': require('./users/get_users'),
+    'get_user': require('./users/get_user'),
+    'update_user': require('./users/update_user'),
+    'delete_user': require('./users/delete_user'),
     // 'log_in': require('./users/log_in'),
     
     //Devices

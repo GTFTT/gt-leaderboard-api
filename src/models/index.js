@@ -8,7 +8,7 @@ const _ = require('lodash');
  */
 const models = {
     // 'connections': require('./connections'),
-    // 'users': require('./users'),
+    'users': require('./users'),
     // 'devices': require('./devices'),
 }
 
