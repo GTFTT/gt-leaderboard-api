@@ -18,12 +18,10 @@ const routes = {
     'get_user': require('./users/get_user'),
     'update_user': require('./users/update_user'),
     'delete_user': require('./users/delete_user'),
-    // 'log_in': require('./users/log_in'),
     
-    //Devices
-    // 'socketConnectionPoint': require('./devices/socketConnectionPoint'),
-    // 'sender': require('./devices/sender'),
-    // 'updater': require('./devices/updater'),
+    // Scores
+    'create_user_score': require('./scores/create_user_score'),
+    'get_user_scores': require('./scores/get_user_scores'),
 }
 
 /**

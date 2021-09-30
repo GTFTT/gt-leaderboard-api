@@ -9,7 +9,7 @@ const _ = require('lodash');
 const models = {
     // 'connections': require('./connections'),
     'users': require('./users'),
-    // 'devices': require('./devices'),
+    'scores': require('./scores'),
 }
 
 /**
