@@ -10,23 +10,38 @@ class Scores {
         this.db = props.db;
     }
 
-    async getUserScores({ userId, filters }) {
+    applyScoresFilters(filters, knexQuery) {
         const {
             page,
             pageSize,
         } = filters;
+
+        if(page && pageSize) {
+            knexQuery
+                .limit(pageSize)
+                .offset(pageSize*(page-1));
+        }
+    }
+
+    async getUserScores({ userId, filters }) {
         const userScoresQuery = this.db
             .select(TO_DB)
             .from('user_scores_tbl')
             .where('user_id_fk', '=', userId);
 
-        if(page) {
-            userScoresQuery
-                .limit(pageSize)
-                .offset(pageSize*(page-1));
-        }
+        const statsQuery = this.db
+            .select(this.db.raw(`COUNT(*) as "count"`))
+            .from('users_tbl')
+            .first();
+
+        this.applyScoresFilters(filters, userScoresQuery);
+        this.applyScoresFilters(_.omit(filters, ["page", "pageSize"]), statsQuery);
         
-        return { userScores: await userScoresQuery };
+        // NOTE: This can be optimized by running two promises in parallel(if needed)
+        const userScores = await userScoresQuery;
+        const stats = await statsQuery;
+        
+        return { userScores, stats };
     }
 
     async createUserScore({ scoreEntity, userId }) {

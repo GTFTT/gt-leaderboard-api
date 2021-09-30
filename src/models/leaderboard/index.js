@@ -49,7 +49,8 @@ class Leaderboard {
         
         const statsQuery = this.db
             .select(this.db.raw(`COUNT(*) as "count"`))
-            .from('users_tbl');
+            .from('users_tbl')
+            .first();
 
         this.applyLeaderboardFilters(filters, leaderboardQuery);
         this.applyLeaderboardFilters(_.omit(filters, ["page", "pageSize"]), statsQuery);
