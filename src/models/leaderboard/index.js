@@ -54,6 +54,7 @@ class Leaderboard {
     async getLeaderboard({filters}) {
         const leaderboardQuery = this.db
             .select(TO_DB)
+            .select(this.db.raw(`ROW_NUMBER () OVER (ORDER BY id_pk) as "rowNumber"`))
             .from('users_tbl')
             .orderBy('rating', 'desc');
         
