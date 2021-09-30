@@ -10,7 +10,6 @@ const _ = require('lodash');
 const routes = {
     'test': require('./test/testRout'),
     'test2': require('./test/testRoute2'),
-    // 'arduino': require('./test/arduino'),
     
     // Users
     'create_user': require('./users/create_user'),

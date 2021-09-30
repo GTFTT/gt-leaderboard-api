@@ -1,5 +1,7 @@
 const Joi = require("joi");
 
+const { supportedRegions } = require('../../constants/global');
+
 module.exports = ({usersModel}) => {
     return {
         method: 'POST',
@@ -10,10 +12,10 @@ module.exports = ({usersModel}) => {
             validate: {
                 // payload: true //Allow everything
                 payload: Joi.object({
-                    firstName: Joi.string().min(5).max(255).pattern(new RegExp('^[a-zA-Z0-9_@.]*$')).required(),
-                    //TODO Email validation
-                    //TODO other fields
-                    email: Joi.string().min(6).max(255).required(),
+                    firstName: Joi.string().min(1).max(255).pattern(new RegExp('^[a-zA-Z0-9_.]*$')).empty("").required(),
+                    lastName: Joi.string().min(1).max(255).pattern(new RegExp('^[a-zA-Z0-9_.]*$')).empty("").optional(),
+                    email: Joi.string().email().required(),
+                    region: Joi.string().valid(...supportedRegions).empty("").optional()
                 })
             }
         },

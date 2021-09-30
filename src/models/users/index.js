@@ -2,6 +2,8 @@
 const _ = require('lodash');
 const Boom = require('boom');
 
+const { TO_DB, TO_MODEL } = require('../../constants/models/users/fields_map');
+const { convertModel } = require('../../constants/helpers');
 
 class Users {
     constructor(props) {
@@ -12,9 +14,10 @@ class Users {
 
         const user = await this.db('users_tbl')
             .select()
-            .where('id_pk', '=', userId);
+            .where('id_pk', '=', userId)
+            .first();
 
-        return { user }
+        return { user: convertModel(user, TO_MODEL) }
     }
 
     async getUsers() {
@@ -25,12 +28,7 @@ class Users {
     }
 
     async createUser({ userEntity }) {
-
-        //TODD user entity to db_user_entity
-        const db_user_entity = {
-            first_name: userEntity.firstName,
-            email: userEntity.email,
-        }
+        const db_user_entity = convertModel(userEntity, TO_DB);
 
         const insertedIds =  await this.db.transaction(async trx => {
             return await trx('users_tbl')
@@ -42,10 +40,7 @@ class Users {
     }
 
     async updateUser({ userEntity, userId }) {
-        //TODD user entity to db_user_entity
-        const db_user_entity = {
-            first_name: userEntity.firstName,
-        }
+        const db_user_entity = convertModel(userEntity, TO_DB);
 
         const updatedIds =  await this.db.transaction(async trx => {
             return await trx('users_tbl')
