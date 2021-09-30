@@ -16,6 +16,20 @@ const convertModel = (model, fieldsMap) => {
     return convertedModel;
 };
 
+/**
+ * Clear text from unwanted characters and prepare it for using in search queries(not only)
+ * @param {*} text - text to be cleaned for search
+ * @returns Clean text
+ */
+function escapeRegExp(text) {
+    if (!text) {
+      return text;
+    }
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  }
+  
+
 module.exports = {
     convertModel,
+    escapeRegExp,
 }
