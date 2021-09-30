@@ -7,7 +7,7 @@ const _ = require('lodash');
  * Key is the name of a module(will be use to create model name) and a value is an export from file
  */
 const models = {
-    // 'connections': require('./connections'),
+    'leaderboard': require('./leaderboard'),
     'users': require('./users'),
     'scores': require('./scores'),
 }

@@ -22,6 +22,9 @@ const routes = {
     // Scores
     'create_user_score': require('./scores/create_user_score'),
     'get_user_scores': require('./scores/get_user_scores'),
+
+    //Leaderboard
+    'leaderboard': require('./leaderboard/get_leaderboard'),
 }
 
 /**
