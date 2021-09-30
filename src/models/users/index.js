@@ -22,7 +22,7 @@ class Users {
 
     async getUsers() {
         const users = await this.db('users_tbl')
-            .select();
+            .select(TO_DB);
 
         return { users }
     }

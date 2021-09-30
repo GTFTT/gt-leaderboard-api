@@ -11,6 +11,10 @@ module.exports = ({ scoresModel }) => {
                 params: Joi.object({
                     userId: Joi.number().integer().required()
                 }),
+                query: Joi.object({
+                    page: Joi.number().integer().min(1).default(1),
+                    pageSize: Joi.number().integer().min(2).default(25),
+                })
             }
         },
         handler: async (request, h) => {
@@ -21,6 +25,7 @@ module.exports = ({ scoresModel }) => {
 
             const result = await scoresModel.getUserScores({
                 userId: request.params.userId,
+                filters: request.query
             });
 
             return result;
