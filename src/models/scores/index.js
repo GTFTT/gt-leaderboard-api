@@ -14,6 +14,7 @@ class Scores {
         const {
             page,
             pageSize,
+            userId,
         } = filters;
 
         if(page && pageSize) {
@@ -21,21 +22,32 @@ class Scores {
                 .limit(pageSize)
                 .offset(pageSize*(page-1));
         }
+        
+        if(userId) {
+            knexQuery
+                .where('user_id_fk', '=', userId);
+        }
     }
 
+    /**
+     * Get user scores and stats
+     * @param {*} params.filters
+     * @returns Scores and stats
+     */
     async getUserScores({ userId, filters }) {
+        const fullFilters = {...filters, userId}
+
         const userScoresQuery = this.db
             .select(TO_DB)
-            .from('user_scores_tbl')
-            .where('user_id_fk', '=', userId);
+            .from('user_scores_tbl');
 
         const statsQuery = this.db
             .select(this.db.raw(`COUNT(*) as "count"`))
-            .from('users_tbl')
+            .from('user_scores_tbl')
             .first();
 
-        this.applyScoresFilters(filters, userScoresQuery);
-        this.applyScoresFilters(_.omit(filters, ["page", "pageSize"]), statsQuery);
+        this.applyScoresFilters(fullFilters, userScoresQuery);
+        this.applyScoresFilters(_.omit(fullFilters, ["page", "pageSize"]), statsQuery);
         
         // NOTE: This can be optimized by running two promises in parallel(if needed)
         const userScores = await userScoresQuery;
