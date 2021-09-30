@@ -11,6 +11,7 @@ const routes = {
     'test': require('./test/testRout'),
     'test2': require('./test/testRoute2'),
     'rootRout': require('./test/rootRout'),
+    'payloadTestRout': require('./test/payloadTestRout'),
     
     // Users
     'create_user': require('./users/create_user'),
