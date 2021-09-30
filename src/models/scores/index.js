@@ -56,6 +56,10 @@ class Scores {
         return { userScores, stats };
     }
 
+    /**
+     * @param {*} params.scoreEntity - will be transformed into db entity(model)
+     * @returns Inserted ids
+     */
     async createUserScore({ scoreEntity, userId }) {
         const db_score_entity = convertModel({...scoreEntity, userId}, TO_DB);
 

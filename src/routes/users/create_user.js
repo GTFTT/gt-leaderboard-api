@@ -14,7 +14,7 @@ module.exports = ({usersModel}) => {
                 payload: Joi.object({
                     firstName: Joi.string().min(1).max(255).pattern(new RegExp('^[a-zA-Z0-9_.]*$')).empty("").required(),
                     lastName: Joi.string().min(1).max(255).pattern(new RegExp('^[a-zA-Z0-9_.]*$')).empty("").optional(),
-                    email: Joi.string().email().required(),
+                    email: Joi.string().email().empty("").required().description('Unique email for new user'),
                     region: Joi.string().valid(...supportedRegions).empty("").optional()
                 })
             }

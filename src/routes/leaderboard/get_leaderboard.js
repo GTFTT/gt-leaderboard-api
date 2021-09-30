@@ -8,12 +8,12 @@ module.exports = ({ leaderboardModel }) => {
         path: '/leaderboard',
         options: {
             tags: ['api', 'leaderboard'],
-            description: "Get leaderboard",
+            description: "Get leaderboard and stats",
             validate: {
                 query: Joi.object({
                     page: Joi.number().integer().min(1).default(1),
                     pageSize: Joi.number().integer().min(2).default(100),
-                    region: Joi.string().valid(...supportedRegions).empty("").optional(),
+                    region: Joi.string().valid(...supportedRegions).empty("").optional().description('Filter for regions, see constants'),
                     query: Joi.string().empty("").optional().description('Used to filter users by name')
                 })
             }

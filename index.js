@@ -4,7 +4,7 @@ const Boom = require('boom');
 const HapiAuthJwt2 = require('hapi-auth-jwt2');
 const awilix= require('awilix'); //Main container
 const Inert = require('inert'); //Static files processing
-const Vision = require('vision'); //Extended functionaity for routes
+const Vision = require('vision'); //Extended functionality for routes
 const dotenv = require('dotenv');
 const knex = require('knex');
 
@@ -60,7 +60,7 @@ const startServer = async function() {
     server.log(['system_info'], `Server/Config HOST: ${process.env.HOST}/${config.get('ip')}`);
 }
 
-//Event: if 'info' or 'error' is emmited we have to output it manually
+//Event: if 'info' or 'error' is emitted we have to output it manually
 server.events.on('log', styledServerMessage);
 
 
@@ -96,7 +96,7 @@ process.on('uncaughtException', uncaughtExceptionShutdown);
 
 //----------------------------------------------------------------------------------
 
-//Export function which wiil start the server if we call it
+//Export function which will start the server if we call it
 module.exports = async () => {
     if (!server.app.container) {
         await startServer();

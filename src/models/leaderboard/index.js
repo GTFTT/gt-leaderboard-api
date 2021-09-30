@@ -10,6 +10,11 @@ class Leaderboard {
         this.db = props.db;
     }
 
+    /**
+     * Apply filters for knex query
+     * @param {*} filters - object with filters
+     * @param {*} knexQuery 
+     */
     applyLeaderboardFilters(filters, knexQuery) {
         const {
             page,
@@ -40,7 +45,12 @@ class Leaderboard {
             });
         }
     }
-
+    
+    /**
+     * Get Leaderboard and stats
+     * @param {*} params.filters
+     * @returns leaderboard and stats
+     */
     async getLeaderboard({filters}) {
         const leaderboardQuery = this.db
             .select(TO_DB)

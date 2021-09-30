@@ -6,7 +6,7 @@ module.exports = ({ scoresModel }) => {
         path: '/users/{userId}/scores',
         options: {
             tags: ['api', 'user_score'],
-            description: "Get all user scores without pagination",
+            description: "Get all user scores",
             validate: {
                 params: Joi.object({
                     userId: Joi.number().integer().required()
@@ -18,8 +18,6 @@ module.exports = ({ scoresModel }) => {
             }
         },
         handler: async (request, h) => {
-
-            //TODO pagination
 
             request.server.log(['info'], "Get user scores");
 
