@@ -54,7 +54,7 @@ class Leaderboard {
     async getLeaderboard({filters}) {
         const leaderboardQuery = this.db
             .select(TO_DB)
-            .select(this.db.raw(`ROW_NUMBER () OVER (ORDER BY id_pk) as "rowNumber"`))
+            .select(this.db.raw(`ROW_NUMBER () OVER (ORDER BY rating desc) as "rowNumber"`))
             .from('users_tbl')
             .orderBy('rating', 'desc');
         
@@ -66,7 +66,7 @@ class Leaderboard {
         this.applyLeaderboardFilters(filters, leaderboardQuery);
         this.applyLeaderboardFilters(_.omit(filters, ["page", "pageSize"]), statsQuery);
         
-        // NOTE: This can be optimized by running two promises in parallel(if needed)
+        // NOTE: This can be optimized by running two promises in parallel(if needed). Another optimization: make request automatically, send buffered data
         const leaderboard = await leaderboardQuery;
         const stats = await statsQuery;
 
