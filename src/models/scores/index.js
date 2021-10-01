@@ -39,7 +39,8 @@ class Scores {
 
         const userScoresQuery = this.db
             .select(TO_DB)
-            .from('user_scores_tbl');
+            .from('user_scores_tbl')
+            .orderBy('id_pk', 'desc');
 
         const statsQuery = this.db
             .select(this.db.raw(`COUNT(*) as "count"`))
