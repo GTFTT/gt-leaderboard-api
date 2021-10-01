@@ -25,7 +25,7 @@ function escapeRegExp(text) {
     if (!text) {
       return text;
     }
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '');
   }
   
 
